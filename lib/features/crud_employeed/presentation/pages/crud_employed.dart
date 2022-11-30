@@ -31,7 +31,7 @@ class CRUDEmployed extends ConsumerWidget {
           data: (list) {
             if (list.isEmpty) {
               return const Center(
-                child: Text(StringsUI.employeesNotFound),
+                child: Text(StringsUIEmployed.employeesNotFound),
               );
             } else {
               return ListView.separated(

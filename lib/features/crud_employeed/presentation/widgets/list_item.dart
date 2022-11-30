@@ -48,7 +48,8 @@ class ItemListCustom extends ConsumerWidget {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: const Text(StringsUI.questionDeletedAlertDialog),
+                      title: const Text(
+                          StringsUIEmployed.questionDeletedAlertDialog),
                       actions: [
                         ElevatedButton(
                             onPressed: () => Navigator.of(context).pop(),
@@ -75,7 +76,8 @@ class ItemListCustom extends ConsumerWidget {
                                           Icons.check,
                                           color: Colors.white,
                                         ),
-                                        Text(StringsUI.deletedSuccessfullyText),
+                                        Text(StringsUIEmployed
+                                            .deletedSuccessfullyText),
                                       ],
                                     ));
                                 ScaffoldMessenger.of(context)

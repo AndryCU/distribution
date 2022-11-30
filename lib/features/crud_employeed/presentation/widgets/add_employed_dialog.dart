@@ -1,4 +1,5 @@
 import 'package:distribution/common/general_strings.dart';
+import 'package:distribution/features/core/strings_ui.dart';
 import 'package:distribution/features/crud_employeed/data/model/remote_employe_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,8 +24,14 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
   final nameEmployedController = TextEditingController();
   final numberChildrenEmployedController = TextEditingController();
   List<String> listItemCat = ['RGA', 'Cuadro', 'Cat 1', 'Cat 2'];
-  List<String> listItemResidence = ['Interno', 'Externo'];
-  List<String> listSexItems = ['Masculino', 'Femenino'];
+  List<String> listItemResidence = [
+    StringsUIEmployed.intern,
+    StringsUIEmployed.extern
+  ];
+  List<String> listSexItems = [
+    StringsUIEmployed.male,
+    StringsUIEmployed.female
+  ];
   String? catSelected = '';
   String? residenceSelected = '';
   String? sexSelected = '';
@@ -74,7 +81,7 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                   height: 73,
                   child: TextFormField(
                       validator: (value) =>
-                          value!.isEmpty ? 'Valor requerido' : null,
+                          value!.isEmpty ? GeneralStrings.requiderValue : null,
                       controller: nameEmployedController,
                       decoration: textFieldDecoration(hintText: 'Nombre')),
                 ),
@@ -88,7 +95,7 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                     child: DropdownButtonFormField<String>(
                       validator: (value) {
                         if (value == null) {
-                          return 'Valor requerido';
+                          return GeneralStrings.requiderValue;
                         } else {
                           return null;
                         }
@@ -121,7 +128,7 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                       isExpanded: true,
                       validator: (value) {
                         if (value == null) {
-                          return 'Valor requerido';
+                          return GeneralStrings.requiderValue;
                         } else {
                           return null;
                         }
@@ -151,20 +158,20 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (value == null) {
-                          return 'Valor requerido';
+                          return GeneralStrings.requiderValue;
                         }
                         if (value.isEmpty) {
-                          return 'Valor requerido';
+                          return GeneralStrings.requiderValue;
                         }
                         if (int.parse(value) > 10) {
-                          return 'La cantidad de hijos no puede ser mayor a 10';
+                          return StringsUIEmployed.errorMaxChildrens;
                         }
                         return null;
                       },
                       keyboardType: TextInputType.number,
                       controller: numberChildrenEmployedController,
                       decoration:
-                          textFieldDecoration(hintText: "Numero de hijos")),
+                          textFieldDecoration(hintText: "Cantidad de hijos")),
                 ),
                 SizedBox(
                   height: 73,
@@ -173,7 +180,7 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                     child: DropdownButtonFormField<String>(
                       validator: (value) {
                         if (value == null) {
-                          return 'Seleccione el sexo';
+                          return StringsUIEmployed.selectSexError;
                         } else {
                           return null;
                         }

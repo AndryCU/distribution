@@ -41,6 +41,7 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
       nameEmployedController.text = model.fullName;
       catSelected = model.catEmp;
       residenceSelected = model.residence;
+      numberChildrenEmployedController.text = model.numberChildren.toString();
       sexSelected = model.gender;
     }
     super.initState();
@@ -204,34 +205,33 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                   child: ElevatedButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          print('object');
+                          if (model == null) {
+                            RemoteEmployedModel model = RemoteEmployedModel(
+                                id: -1,
+                                catEmp: catSelected!,
+                                fullName: nameEmployedController.text,
+                                gender: sexSelected!,
+                                numberChildren: int.parse(
+                                    numberChildrenEmployedController.text),
+                                residence: residenceSelected!);
+                            ref
+                                .read(listEmployedController.notifier)
+                                .addEmployed(model);
+                          } else {
+                            RemoteEmployedModel modelAdd = RemoteEmployedModel(
+                                id: widget.model!.id,
+                                catEmp: catSelected!,
+                                fullName: nameEmployedController.text,
+                                gender: sexSelected!,
+                                numberChildren: int.parse(
+                                    numberChildrenEmployedController.text),
+                                residence: residenceSelected!);
+                            ref
+                                .read(listEmployedController.notifier)
+                                .updateEmployed(model.id, modelAdd);
+                          }
+                          Navigator.of(context).pop();
                         }
-                        //   if (model == null) {
-                        //     RemoteEmployedModel model = RemoteEmployedModel(
-                        //         id: -1,
-                        //         catEmp: catSelected!,
-                        //         fullName: nameEmployedController.text,
-                        //         gender: sexSelected!,
-                        //         numberChildren: int.parse(
-                        //             numberChildrenEmployedController.text),
-                        //         residence: residenceSelected!);
-                        //     ref
-                        //         .read(listEmployedController.notifier)
-                        //         .addEmployed(model);
-                        //   } else {
-                        //     RemoteEmployedModel modelAdd = RemoteEmployedModel(
-                        //         id: widget.model!.id,
-                        //         catEmp: catSelected!,
-                        //         fullName: nameEmployedController.text,
-                        //         gender: sexSelected!,
-                        //         numberChildren: int.parse(
-                        //             numberChildrenEmployedController.text),
-                        //         residence: residenceSelected!);
-                        //     ref
-                        //         .read(listEmployedController.notifier)
-                        //         .updateEmployed(model.id, modelAdd);
-                        //   }
-                        //   Navigator.of(context).pop();
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

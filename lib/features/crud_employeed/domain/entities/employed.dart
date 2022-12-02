@@ -1,6 +1,7 @@
 class Employed {
   final String fullName, residence, gender, catEmp;
   final int numberChildren, id;
+  final bool isDeleted;
 
   Employed(
       {required this.id,
@@ -8,5 +9,6 @@ class Employed {
       required this.residence,
       required this.numberChildren,
       required this.gender,
-      required this.catEmp});
+      required this.catEmp,
+      required this.isDeleted});
 }

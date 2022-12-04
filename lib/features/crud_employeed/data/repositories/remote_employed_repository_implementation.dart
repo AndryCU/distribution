@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:distribution/features/crud_employeed/data/model/remote_employe_model.dart';
 import 'package:distribution/features/crud_employeed/domain/repositories/employed_repository.dart';
 import 'package:get_it/get_it.dart';
@@ -17,27 +19,49 @@ class RemoteEmployedRepositoryImplementation
         .from(tableName)
         .insert(employedModel.toJson())
         .select('id');
-    return 0;
+    return response[0]['id'] as int;
   }
 
   @override
   Future<void> deleteEmployed({required int id}) async {
-    //FIXME incerto un empleado, genera id=-1 localmente, y online si esta bien, si lo trato de borrar no hace pq no coinciden los id
-    // ver si cuando sync las bd se arregla...
-    final data = await supabase.from(tableName).delete().match({'id': id});
+    await supabase
+        .from(tableName)
+        .update({'isDeleted': true}).match({'id': '$id'});
   }
 
   @override
   Future<List<RemoteEmployedModel>> getEmployees() async {
     List<RemoteEmployedModel> list = [];
-    final a = await supabase.from(tableName).select('*') as List;
+    final a = await supabase.from(tableName).select('*').eq('isDeleted', false)
+        as List;
     list = a.map((i) => RemoteEmployedModel.fromJson(i)).toList();
     return list;
   }
 
   @override
-  void updateEmployed(
+  Future<void> updateEmployed(
       {required int id, required RemoteEmployedModel model}) async {
     await supabase.from(tableName).update(model.toJson()).match({'id': '$id'});
+  }
+
+  Future<int> getMaxRemoteId() async {
+    final maxId = await supabase
+        .from(tableName)
+        .select('id')
+        .order('id', ascending: false)
+        .limit(1) as List;
+    return maxId[0]['id'] as int;
+  }
+
+  @override
+  Future<List<RemoteEmployedModel>> getNewEmployees({required int id}) async {
+    List<RemoteEmployedModel> list = [];
+    final a = await supabase
+        .from(tableName)
+        .select('*')
+        .eq('isDeleted', false)
+        .gt('id', id) as List;
+    list = a.map((i) => RemoteEmployedModel.fromJson(i)).toList();
+    return list;
   }
 }

@@ -56,4 +56,15 @@ class RemoteEmployedModel extends Employed {
         'gender': gender,
         'catEmp': catEmp,
       };
+
+  RemoteEmployedModel copyWith({required int id}) {
+    return RemoteEmployedModel(
+        id: id,
+        fullName: fullName,
+        residence: residence,
+        numberChildren: numberChildren,
+        gender: gender,
+        catEmp: catEmp,
+        isDeleted: isDeleted);
+  }
 }

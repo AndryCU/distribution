@@ -17,3 +17,7 @@ final listEmployedController = StateNotifierProvider<EmployedController,
     AsyncValue<List<RemoteEmployedModel>>>((ref) {
   return EmployedController(ref);
 });
+
+final isVisibleFAB = StateProvider<bool>(
+  (ref) => true,
+);

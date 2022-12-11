@@ -1,10 +1,12 @@
 import 'package:distribution/common/general_strings.dart';
 import 'package:distribution/features/core/strings_ui.dart';
 import 'package:distribution/features/crud_employeed/data/model/remote_employe_model.dart';
+import 'package:distribution/features/crud_employeed/presentation/pages/crud_employed.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
-
+import '../../../../main_ui/pages/main_page.dart';
 import '../state/riverpood.dart';
 
 GetIt sl = GetIt.instance;
@@ -83,6 +85,9 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                       validator: (value) =>
                           value!.isEmpty ? GeneralStrings.requiderValue : null,
                       controller: nameEmployedController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]"))
+                      ],
                       decoration: textFieldDecoration(hintText: 'Nombre')),
                 ),
                 const SizedBox(
@@ -170,6 +175,10 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                       },
                       keyboardType: TextInputType.number,
                       controller: numberChildrenEmployedController,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.allow(
+                            RegExp(r'^[1-9][0-9]*'))
+                      ],
                       decoration:
                           textFieldDecoration(hintText: "Cantidad de hijos")),
                 ),
@@ -215,29 +224,65 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                           if (model == null) {
                             RemoteEmployedModel model = RemoteEmployedModel(
                                 id: -1,
+                                version: 1,
                                 catEmp: catSelected!,
                                 fullName: nameEmployedController.text,
                                 gender: sexSelected!,
                                 numberChildren: int.parse(
                                     numberChildrenEmployedController.text),
-                                residence: residenceSelected!);
+                                residence: residenceSelected!,
+                                isDeleted: false);
+                            const snackBar = SnackBar(
+                              backgroundColor: Colors.green,
+                              duration: Duration(seconds: 2),
+                              content: Text('Creado con exito'),
+                            );
+                            final snackBar2 = SnackBar(
+                              backgroundColor: Colors.grey,
+                              duration: Duration(seconds: 16),
+                              content: Row(
+                                children: [Text('Creando'), Icon(Icons.upload)],
+                              ),
+                            );
                             ref
                                 .read(listEmployedController.notifier)
-                                .addEmployed(model);
+                                .addEmployed(model)
+                                .onError((error, stackTrace) {
+                              const snackBarError = SnackBar(
+                                duration: Duration(seconds: 2),
+                                content: Text('Ha ocurrido un error'),
+                                //FIXME si ocurre un error lo muestra bien,
+                                //PERO, me muestra el mensaje de creado con exito :(
+                              );
+                              ScaffoldMessenger.of(scaffoldKey.currentContext!)
+                                  .showSnackBar(snackBarError);
+                            }).whenComplete(() {
+                              ScaffoldMessenger.of(scaffoldKey.currentContext!)
+                                ..hideCurrentSnackBar()
+                                ..showSnackBar(snackBar);
+                            });
+                            ScaffoldMessenger.of(scaffoldKey.currentContext!)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(snackBar2);
+
+                            //TODO mostrar snackbar cuando se complete la accion y las otras operaciones del crud
                           } else {
                             RemoteEmployedModel modelAdd = RemoteEmployedModel(
                                 id: widget.model!.id,
+                                version: model.version! + 1,
                                 catEmp: catSelected!,
                                 fullName: nameEmployedController.text,
                                 gender: sexSelected!,
                                 numberChildren: int.parse(
                                     numberChildrenEmployedController.text),
-                                residence: residenceSelected!);
+                                residence: residenceSelected!,
+                                isDeleted: false);
                             ref
                                 .read(listEmployedController.notifier)
                                 .updateEmployed(model.id, modelAdd);
                           }
-                          Navigator.of(context).pop();
+                          Navigator.of(context, rootNavigator: true)
+                              .pop('dialog');
                         }
                       },
                       child: Row(

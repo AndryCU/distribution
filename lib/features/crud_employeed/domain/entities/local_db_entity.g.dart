@@ -46,6 +46,11 @@ const EmployedLocalSchema = CollectionSchema(
       id: 5,
       name: r'residence',
       type: IsarType.string,
+    ),
+    r'version': PropertySchema(
+      id: 6,
+      name: r'version',
+      type: IsarType.long,
     )
   },
   estimateSize: _employedLocalEstimateSize,
@@ -87,6 +92,7 @@ void _employedLocalSerialize(
   writer.writeBool(offsets[3], object.isDeleted);
   writer.writeLong(offsets[4], object.numberChildren);
   writer.writeString(offsets[5], object.residence);
+  writer.writeLong(offsets[6], object.version);
 }
 
 EmployedLocal _employedLocalDeserialize(
@@ -103,6 +109,7 @@ EmployedLocal _employedLocalDeserialize(
   object.isDeleted = reader.readBool(offsets[3]);
   object.numberChildren = reader.readLong(offsets[4]);
   object.residence = reader.readString(offsets[5]);
+  object.version = reader.readLong(offsets[6]);
   return object;
 }
 
@@ -125,6 +132,8 @@ P _employedLocalDeserializeProp<P>(
       return (reader.readLong(offset)) as P;
     case 5:
       return (reader.readString(offset)) as P;
+    case 6:
+      return (reader.readLong(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -889,6 +898,62 @@ extension EmployedLocalQueryFilter
       ));
     });
   }
+
+  QueryBuilder<EmployedLocal, EmployedLocal, QAfterFilterCondition>
+      versionEqualTo(int value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'version',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<EmployedLocal, EmployedLocal, QAfterFilterCondition>
+      versionGreaterThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'version',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<EmployedLocal, EmployedLocal, QAfterFilterCondition>
+      versionLessThan(
+    int value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'version',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<EmployedLocal, EmployedLocal, QAfterFilterCondition>
+      versionBetween(
+    int lower,
+    int upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'version',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension EmployedLocalQueryObject
@@ -973,6 +1038,18 @@ extension EmployedLocalQuerySortBy
       sortByResidenceDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'residence', Sort.desc);
+    });
+  }
+
+  QueryBuilder<EmployedLocal, EmployedLocal, QAfterSortBy> sortByVersion() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'version', Sort.asc);
+    });
+  }
+
+  QueryBuilder<EmployedLocal, EmployedLocal, QAfterSortBy> sortByVersionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'version', Sort.desc);
     });
   }
 }
@@ -1067,6 +1144,18 @@ extension EmployedLocalQuerySortThenBy
       return query.addSortBy(r'residence', Sort.desc);
     });
   }
+
+  QueryBuilder<EmployedLocal, EmployedLocal, QAfterSortBy> thenByVersion() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'version', Sort.asc);
+    });
+  }
+
+  QueryBuilder<EmployedLocal, EmployedLocal, QAfterSortBy> thenByVersionDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'version', Sort.desc);
+    });
+  }
 }
 
 extension EmployedLocalQueryWhereDistinct
@@ -1109,6 +1198,12 @@ extension EmployedLocalQueryWhereDistinct
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'residence', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<EmployedLocal, EmployedLocal, QDistinct> distinctByVersion() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'version');
     });
   }
 }
@@ -1154,6 +1249,12 @@ extension EmployedLocalQueryProperty
   QueryBuilder<EmployedLocal, String, QQueryOperations> residenceProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'residence');
+    });
+  }
+
+  QueryBuilder<EmployedLocal, int, QQueryOperations> versionProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'version');
     });
   }
 }

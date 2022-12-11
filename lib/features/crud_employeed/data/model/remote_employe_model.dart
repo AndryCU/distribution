@@ -5,6 +5,7 @@ import '../../domain/entities/local_db_entity.dart';
 class RemoteEmployedModel extends Employed {
   RemoteEmployedModel(
       {required int id,
+      required int version,
       required String fullName,
       required String residence,
       required int numberChildren,
@@ -13,6 +14,7 @@ class RemoteEmployedModel extends Employed {
       required bool isDeleted})
       : super(
             id: id,
+            version: version,
             catEmp: catEmp,
             fullName: fullName,
             gender: gender,
@@ -28,8 +30,10 @@ class RemoteEmployedModel extends Employed {
     final gender = data['gender'] as String;
     final cat = data['catEmp'] as String;
     final isDeleted = data['isDeleted'] as bool;
+    final version = data['version'] as int;
     return RemoteEmployedModel(
         id: id,
+        version: version,
         catEmp: cat,
         fullName: name,
         gender: gender,
@@ -41,6 +45,7 @@ class RemoteEmployedModel extends Employed {
   factory RemoteEmployedModel.fromEmployed(EmployedLocal employed) {
     return RemoteEmployedModel(
         id: employed.id,
+        version: employed.version,
         fullName: employed.fullName,
         residence: employed.residence,
         numberChildren: employed.numberChildren,
@@ -51,6 +56,7 @@ class RemoteEmployedModel extends Employed {
 
   Map<String, dynamic> toJson() => {
         'fullName': fullName,
+        'version': version,
         'residence': residence,
         'numberChildren': numberChildren,
         'gender': gender,
@@ -60,6 +66,7 @@ class RemoteEmployedModel extends Employed {
   RemoteEmployedModel copyWith({required int id}) {
     return RemoteEmployedModel(
         id: id,
+        version: version!,
         fullName: fullName,
         residence: residence,
         numberChildren: numberChildren,

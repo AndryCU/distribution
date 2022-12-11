@@ -50,6 +50,7 @@ class LocalEmployedRepositoryImplementation implements LocalEmployedRepository {
       RemoteEmployedModel model) {
     final m = EmployedLocal()
       ..catEmp = model.catEmp
+      ..version = model.version!
       ..fullName = model.fullName
       ..gender = model.gender
       ..id = model.id
@@ -65,6 +66,7 @@ class LocalEmployedRepositoryImplementation implements LocalEmployedRepository {
     final employees = isar.employedLocals;
     final employed = EmployedLocal()
       ..catEmp = employedModel.catEmp
+      ..version = employedModel.version!
       ..fullName = employedModel.fullName
       ..gender = employedModel.gender
       ..id = id
@@ -84,6 +86,7 @@ class LocalEmployedRepositoryImplementation implements LocalEmployedRepository {
       final employed = EmployedLocal()
         ..catEmp = employedModel.catEmp
         ..fullName = employedModel.fullName
+        ..version = employedModel.version!
         ..gender = employedModel.gender
         ..id = employedModel.id
         ..numberChildren = employedModel.numberChildren

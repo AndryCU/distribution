@@ -6,6 +6,7 @@ part 'local_db_entity.g.dart';
 @Name("employed")
 class EmployedLocal {
   late Id id;
+  late int version;
   late String fullName;
   late String residence;
   late int numberChildren;

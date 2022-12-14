@@ -1,13 +1,11 @@
-import 'package:distribution/features/crud_employeed/data/model/remote_employe_model.dart';
-import 'package:distribution/features/crud_employeed/domain/repositories/employed_repository.dart';
-import 'package:distribution/features/crud_employeed/domain/repositories/local_employed_repository.dart';
+import '../../data/model/remote_employe_model.dart';
+import '../repositories/employed_repository.dart';
+import '../repositories/local_employed_repository.dart';
 
-import '../entities/local_db_entity.dart';
-
-class AddEmployeUseCase {
+class AddEmployedUseCase {
   final RemoteEmployedRepository _remoteEmployedRepository;
   final LocalEmployedRepository _localEmployedRepository;
-  AddEmployeUseCase(
+  AddEmployedUseCase(
       this._remoteEmployedRepository, this._localEmployedRepository);
 
   Future<int> addEmployed(RemoteEmployedModel _employedModel) async {

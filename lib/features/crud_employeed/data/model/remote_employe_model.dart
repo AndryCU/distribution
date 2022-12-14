@@ -1,4 +1,4 @@
-import 'package:distribution/features/crud_employeed/domain/entities/employed.dart';
+import '../../domain/entities/employed.dart';
 
 import '../../domain/entities/local_db_entity.dart';
 

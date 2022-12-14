@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:distribution/features/crud_employeed/data/model/remote_employe_model.dart';
-import 'package:distribution/features/crud_employeed/domain/repositories/employed_repository.dart';
+import '../model/remote_employe_model.dart';
+import '../../domain/repositories/employed_repository.dart';
 import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

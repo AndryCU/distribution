@@ -1,5 +1,5 @@
-import 'package:distribution/features/crud_employeed/data/model/remote_employe_model.dart';
-import 'package:distribution/utils/chec_internet_connection.dart';
+import '../../data/model/remote_employe_model.dart';
+import '../../../../utils/chec_internet_connection.dart';
 
 import '../repositories/employed_repository.dart';
 import '../repositories/local_employed_repository.dart';

@@ -1,5 +1,5 @@
-import 'package:distribution/features/crud_employeed/domain/repositories/employed_repository.dart';
-import 'package:distribution/features/crud_employeed/domain/repositories/local_employed_repository.dart';
+import '../repositories/employed_repository.dart';
+import '../repositories/local_employed_repository.dart';
 
 class DeleteEmployedUseCase {
   final RemoteEmployedRepository _remoteEmployedRepository;

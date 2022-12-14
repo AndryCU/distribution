@@ -1,5 +1,4 @@
 import '../../data/model/remote_employe_model.dart';
-import '../entities/local_db_entity.dart';
 
 abstract class LocalEmployedRepository {
   Future<List<RemoteEmployedModel>> getEmployees();

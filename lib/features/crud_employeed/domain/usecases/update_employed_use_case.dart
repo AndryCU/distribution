@@ -1,7 +1,3 @@
-import 'dart:ffi';
-
-import 'package:get_it/get_it.dart';
-
 import '../../data/model/remote_employe_model.dart';
 import '../repositories/employed_repository.dart';
 import '../repositories/local_employed_repository.dart';

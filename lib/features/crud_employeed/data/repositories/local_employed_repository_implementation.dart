@@ -48,7 +48,7 @@ class LocalEmployedRepositoryImplementation implements LocalEmployedRepository {
 
   EmployedLocal _createEmployedFromRemoteEmployedModel(
       RemoteEmployedModel model) {
-    final m = EmployedLocal()
+    return EmployedLocal()
       ..catEmp = model.catEmp
       ..version = model.version!
       ..fullName = model.fullName
@@ -56,8 +56,6 @@ class LocalEmployedRepositoryImplementation implements LocalEmployedRepository {
       ..id = model.id
       ..numberChildren = model.numberChildren
       ..residence = model.residence;
-    m.isDeleted = model.isDeleted;
-    return m;
   }
 
   @override
@@ -83,16 +81,7 @@ class LocalEmployedRepositoryImplementation implements LocalEmployedRepository {
     final employees = isar.employedLocals;
     List<EmployedLocal> list = [];
     listRemote.forEach((employedModel) {
-      final employed = EmployedLocal()
-        ..catEmp = employedModel.catEmp
-        ..fullName = employedModel.fullName
-        ..version = employedModel.version!
-        ..gender = employedModel.gender
-        ..id = employedModel.id
-        ..numberChildren = employedModel.numberChildren
-        ..residence = employedModel.residence
-        ..isDeleted = employedModel.isDeleted;
-      list.add(employed);
+      list.add(_createEmployedFromRemoteEmployedModel(employedModel));
     });
     await isar.writeTxn(() async {
       await employees.putAll(list);

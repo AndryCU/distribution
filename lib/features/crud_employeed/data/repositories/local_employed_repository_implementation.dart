@@ -54,6 +54,7 @@ class LocalEmployedRepositoryImplementation implements LocalEmployedRepository {
       ..fullName = model.fullName
       ..gender = model.gender
       ..id = model.id
+      ..isDeleted = model.isDeleted
       ..numberChildren = model.numberChildren
       ..residence = model.residence;
   }

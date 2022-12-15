@@ -1,12 +1,11 @@
-import 'package:distribution/features/core/strings_ui.dart';
-import 'package:distribution/features/crud_employeed/presentation/state/riverpood.dart';
-import 'package:distribution/features/crud_employeed/presentation/widgets/add_employed_dialog.dart';
-import 'package:distribution/features/crud_employeed/presentation/widgets/list_item.dart';
+import '../widgets/strings_ui.dart';
+import '../state/riverpood.dart';
+import '../widgets/add_employed_dialog.dart';
+import '../widgets/list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../main_ui/pages/main_page.dart';
 
@@ -18,6 +17,14 @@ class CRUDEmployed extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     double queryData = MediaQuery.of(context).size.height;
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
       resizeToAvoidBottomInset: false,
       floatingActionButton: ref.watch(isVisibleFAB)
           ? FloatingActionButton(
@@ -70,6 +77,9 @@ class CRUDEmployed extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   CircularProgressIndicator(),
+                  SizedBox(
+                    width: 5,
+                  ),
                   Text('Cargando datos')
                 ],
               )))),

@@ -1,12 +1,11 @@
 import 'package:distribution/common/general_strings.dart';
-import 'package:distribution/features/core/strings_ui.dart';
+import 'package:distribution/features/core/snackbar_widget.dart';
 import 'package:distribution/features/crud_employeed/data/model/remote_employe_model.dart';
-import 'package:distribution/features/crud_employeed/presentation/pages/crud_employed.dart';
+import 'package:distribution/features/crud_employeed/presentation/widgets/strings_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
-import '../../../../main_ui/pages/main_page.dart';
 import '../state/riverpood.dart';
 
 GetIt sl = GetIt.instance;
@@ -86,9 +85,11 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                           value!.isEmpty ? GeneralStrings.requiderValue : null,
                       controller: nameEmployedController,
                       inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]"))
+                        FilteringTextInputFormatter.allow(
+                            RegExp("[a-zA-ZñÑáÁéÉíÍóÓúÚ ]"))
                       ],
-                      decoration: textFieldDecoration(hintText: 'Nombre')),
+                      decoration: textFieldDecoration(
+                          hintText: StringsUIEmployed.name)),
                 ),
                 const SizedBox(
                   height: 5,
@@ -109,7 +110,7 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                       alignment: AlignmentDirectional.centerEnd,
                       borderRadius: BorderRadius.circular(12),
                       decoration: InputDecoration(
-                          labelText: 'Categoría',
+                          labelText: StringsUIEmployed.category,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           )),
@@ -141,7 +142,7 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                       value: residenceSelected,
                       borderRadius: BorderRadius.circular(12),
                       decoration: InputDecoration(
-                          labelText: 'Residencia',
+                          labelText: StringsUIEmployed.residence,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           )),
@@ -177,10 +178,10 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                       controller: numberChildrenEmployedController,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                            RegExp(r'^[1-9][0-9]*'))
+                            RegExp(r'^[0-9][0-9]*'))
                       ],
-                      decoration:
-                          textFieldDecoration(hintText: "Cantidad de hijos")),
+                      decoration: textFieldDecoration(
+                          hintText: StringsUIEmployed.childrenNumber)),
                 ),
                 SizedBox(
                   height: 73,
@@ -197,7 +198,7 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                       value: sexSelected,
                       borderRadius: BorderRadius.circular(12),
                       decoration: InputDecoration(
-                          labelText: 'Sexo',
+                          labelText: StringsUIEmployed.gender,
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                           )),
@@ -232,40 +233,32 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                                     numberChildrenEmployedController.text),
                                 residence: residenceSelected!,
                                 isDeleted: false);
-                            const snackBar = SnackBar(
-                              backgroundColor: Colors.green,
-                              duration: Duration(seconds: 2),
-                              content: Text('Creado con exito'),
-                            );
-                            final snackBar2 = SnackBar(
-                              backgroundColor: Colors.grey,
-                              duration: Duration(seconds: 16),
-                              content: Row(
-                                children: [Text('Creando'), Icon(Icons.upload)],
-                              ),
-                            );
                             ref
                                 .read(listEmployedController.notifier)
                                 .addEmployed(model)
-                                .onError((error, stackTrace) {
-                              const snackBarError = SnackBar(
-                                duration: Duration(seconds: 2),
-                                content: Text('Ha ocurrido un error'),
-                                //FIXME si ocurre un error lo muestra bien,
-                                //PERO, me muestra el mensaje de creado con exito :(
-                              );
-                              ScaffoldMessenger.of(scaffoldKey.currentContext!)
-                                  .showSnackBar(snackBarError);
-                            }).whenComplete(() {
-                              ScaffoldMessenger.of(scaffoldKey.currentContext!)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBar);
+                                .then((value) => showSnackBar(
+                                    message: StringsUIEmployed
+                                        .addingSuccessfullyText,
+                                    color: Colors.green,
+                                    seconds: 4))
+                                .timeout(
+                              const Duration(seconds: 15),
+                              onTimeout: () {
+                                showSnackBar(
+                                    message: StringsUIEmployed.connectionError,
+                                    color: Colors.red,
+                                    seconds: 4);
+                              },
+                            ).onError((error, stackTrace) {
+                              showSnackBar(
+                                  message: StringsUIEmployed.error,
+                                  color: Colors.red,
+                                  seconds: 3);
                             });
-                            ScaffoldMessenger.of(scaffoldKey.currentContext!)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(snackBar2);
-
-                            //TODO mostrar snackbar cuando se complete la accion y las otras operaciones del crud
+                            showSnackBar(
+                                message: StringsUIEmployed.loadingAdd,
+                                color: Colors.blue,
+                                seconds: 16);
                           } else {
                             RemoteEmployedModel modelAdd = RemoteEmployedModel(
                                 id: widget.model!.id,
@@ -279,7 +272,28 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                                 isDeleted: false);
                             ref
                                 .read(listEmployedController.notifier)
-                                .updateEmployed(model.id, modelAdd);
+                                .updateEmployed(model.id, modelAdd)
+                                .then((value) => showSnackBar(
+                                    message: StringsUIEmployed
+                                        .updatingSuccessfullyText,
+                                    color: Colors.green,
+                                    seconds: 3))
+                                .timeout(
+                              const Duration(seconds: 15),
+                              onTimeout: () {
+                                showSnackBar(
+                                    message: StringsUIEmployed.connectionError,
+                                    color: Colors.red,
+                                    seconds: 4);
+                              },
+                            ).onError((error, stackTrace) => showSnackBar(
+                                    message: StringsUIEmployed.error,
+                                    color: Colors.red,
+                                    seconds: 3));
+                            showSnackBar(
+                                message: StringsUIEmployed.loadingUpdate,
+                                color: Colors.blue,
+                                seconds: 16);
                           }
                           Navigator.of(context, rootNavigator: true)
                               .pop('dialog');

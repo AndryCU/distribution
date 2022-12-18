@@ -10,7 +10,7 @@ class UpdateEmployedUseCase {
       this._remoteEmployedRepository, this._localEmployedRepository);
 
   Future<void> updateEmployed(int id, RemoteEmployedModel model) async {
-    await _remoteEmployedRepository.updateEmployed(id: id, model: model);
+    await _remoteEmployedRepository.updateEmployed(model: model);
     await _localEmployedRepository.updateEmployed(model: model);
   }
 }

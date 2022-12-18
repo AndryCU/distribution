@@ -39,11 +39,14 @@ class RemoteEmployedRepositoryImplementation
   }
 
   @override
-  Future<void> updateEmployed(
-      {required int id, required RemoteEmployedModel model}) async {
-    await supabase.from(tableName).update(model.toJson()).match({'id': '$id'});
+  Future<void> updateEmployed({required RemoteEmployedModel model}) async {
+    await supabase
+        .from(tableName)
+        .update(model.toJson())
+        .match({'id': model.id});
   }
 
+  @override
   Future<int> getMaxRemoteId() async {
     final maxId = await supabase
         .from(tableName)

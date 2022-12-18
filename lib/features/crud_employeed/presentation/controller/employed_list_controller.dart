@@ -30,12 +30,16 @@ class EmployedController
   }
 
   Future<void> syncEmployees() async {
-    state = const AsyncValue.loading();
-    final newEmployees = await sl.get<SyncEmployedUseCase>().syncEmployees();
-    state.whenData((value) {
-      state = AsyncValue.data([...value, ...newEmployees]);
-    });
-    _ref.invalidate(listEmployedController);
+    try {
+      state = const AsyncValue.loading();
+      final newEmployees = await sl.get<SyncEmployedUseCase>().syncEmployees();
+      state.whenData((value) {
+        state = AsyncValue.data([...value, ...newEmployees]);
+      });
+      _ref.invalidate(listEmployedController);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
   }
 
   Future<void> addEmployed(RemoteEmployedModel model) async {
@@ -55,7 +59,6 @@ class EmployedController
   }
 
   Future<void> updateEmployed(int id, RemoteEmployedModel model) async {
-    //TODO verificar que existan cambios en el modelo para no hacer llamadas por gusto, implementar el equal
     await sl.get<UpdateEmployedUseCase>().updateEmployed(id, model);
     state.whenData((employees) {
       employees[employees.indexWhere((element) => element.id == model.id)] =

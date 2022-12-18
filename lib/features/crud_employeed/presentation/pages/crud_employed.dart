@@ -71,7 +71,7 @@ class CRUDEmployed extends ConsumerWidget {
             }
           },
           error: (err, stack) =>
-              const Center(child: Text('Ha ocurrido un error!')),
+              const Center(child: Text(StringsUIEmployed.errorListEmployees)),
           loading: (() => Center(
                   child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,

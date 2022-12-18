@@ -1,3 +1,5 @@
+import 'package:distribution/common/consts.dart';
+
 import '../../../../common/general_strings.dart';
 import '../../../core/snackbar_widget.dart';
 import 'strings_ui.dart';
@@ -69,25 +71,17 @@ class ItemListCustom extends ConsumerWidget {
                                   message:
                                       StringsUIEmployed.deletedSuccessfullyText,
                                   color: Colors.green,
-                                  seconds: 4);
-                            }).timeout(
-                              const Duration(seconds: 15),
-                              onTimeout: () {
-                                showSnackBar(
-                                    message: StringsUIEmployed.connectionError,
-                                    color: Colors.red,
-                                    seconds: 4);
-                              },
-                            ).onError((error, stackTrace) {
+                                  seconds: successSnackBarTime);
+                            }).onError((error, stackTrace) {
                               showSnackBar(
                                   message: StringsUIEmployed.error,
                                   color: Colors.red,
-                                  seconds: 4);
+                                  seconds: errorSnackBarTime);
                             });
                             showSnackBar(
                                 message: StringsUIEmployed.loadingDeleting,
                                 color: Colors.blue,
-                                seconds: 16);
+                                seconds: loadingSnackBarTime);
                             Navigator.of(context).pop();
                           },
                           child: const Text(GeneralStrings.acceptText))

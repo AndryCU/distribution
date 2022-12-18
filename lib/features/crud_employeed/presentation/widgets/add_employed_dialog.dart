@@ -1,3 +1,4 @@
+import 'package:distribution/common/consts.dart';
 import 'package:distribution/common/general_strings.dart';
 import 'package:distribution/features/core/snackbar_widget.dart';
 import 'package:distribution/features/crud_employeed/data/model/remote_employe_model.dart';
@@ -82,11 +83,11 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                   height: 73,
                   child: TextFormField(
                       validator: (value) =>
-                          value!.isEmpty ? GeneralStrings.requiderValue : null,
+                          value!.isEmpty ? GeneralStrings.requiredValue : null,
                       controller: nameEmployedController,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                            RegExp("[a-zA-ZñÑáÁéÉíÍóÓúÚ ]"))
+                            RegExp(GeneralStrings.regularExpressionText))
                       ],
                       decoration: textFieldDecoration(
                           hintText: StringsUIEmployed.name)),
@@ -101,7 +102,7 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                     child: DropdownButtonFormField<String>(
                       validator: (value) {
                         if (value == null) {
-                          return GeneralStrings.requiderValue;
+                          return GeneralStrings.requiredValue;
                         } else {
                           return null;
                         }
@@ -134,7 +135,7 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                       isExpanded: true,
                       validator: (value) {
                         if (value == null) {
-                          return GeneralStrings.requiderValue;
+                          return GeneralStrings.requiredValue;
                         } else {
                           return null;
                         }
@@ -164,10 +165,10 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (value == null) {
-                          return GeneralStrings.requiderValue;
+                          return GeneralStrings.requiredValue;
                         }
                         if (value.isEmpty) {
-                          return GeneralStrings.requiderValue;
+                          return GeneralStrings.requiredValue;
                         }
                         if (int.parse(value) > 10) {
                           return StringsUIEmployed.errorMaxChildrens;
@@ -219,100 +220,90 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
                 ),
                 SizedBox(
                   width: width,
-                  child: ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          if (model == null) {
-                            RemoteEmployedModel model = RemoteEmployedModel(
-                                id: -1,
-                                version: 1,
-                                catEmp: catSelected!,
-                                fullName: nameEmployedController.text,
-                                gender: sexSelected!,
-                                numberChildren: int.parse(
-                                    numberChildrenEmployedController.text),
-                                residence: residenceSelected!,
-                                isDeleted: false);
-                            ref
-                                .read(listEmployedController.notifier)
-                                .addEmployed(model)
-                                .then((value) => showSnackBar(
-                                    message: StringsUIEmployed
-                                        .addingSuccessfullyText,
-                                    color: Colors.green,
-                                    seconds: 4))
-                                .timeout(
-                              const Duration(seconds: 15),
-                              onTimeout: () {
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () =>
+                            Navigator.of(context, rootNavigator: true)
+                                .pop('dialog'),
+                        child: const Text(GeneralStrings.cancelText),
+                      ),
+                      const Spacer(),
+                      ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              if (model == null) {
+                                RemoteEmployedModel model = RemoteEmployedModel(
+                                    id: -1,
+                                    version: 1,
+                                    catEmp: catSelected!,
+                                    fullName: nameEmployedController.text,
+                                    gender: sexSelected!,
+                                    numberChildren: int.parse(
+                                        numberChildrenEmployedController.text),
+                                    residence: residenceSelected!,
+                                    isDeleted: false);
+                                ref
+                                    .read(listEmployedController.notifier)
+                                    .addEmployed(model)
+                                    .then((value) => showSnackBar(
+                                        message: StringsUIEmployed
+                                            .addingSuccessfullyText,
+                                        color: Colors.green,
+                                        seconds: successSnackBarTime))
+                                    .onError((error, stackTrace) {
+                                  showSnackBar(
+                                      message: StringsUIEmployed.error,
+                                      color: Colors.red,
+                                      seconds: errorSnackBarTime);
+                                });
                                 showSnackBar(
-                                    message: StringsUIEmployed.connectionError,
-                                    color: Colors.red,
-                                    seconds: 4);
-                              },
-                            ).onError((error, stackTrace) {
-                              showSnackBar(
-                                  message: StringsUIEmployed.error,
-                                  color: Colors.red,
-                                  seconds: 3);
-                            });
-                            showSnackBar(
-                                message: StringsUIEmployed.loadingAdd,
-                                color: Colors.blue,
-                                seconds: 16);
-                          } else {
-                            RemoteEmployedModel modelAdd = RemoteEmployedModel(
-                                id: widget.model!.id,
-                                version: model.version! + 1,
-                                catEmp: catSelected!,
-                                fullName: nameEmployedController.text,
-                                gender: sexSelected!,
-                                numberChildren: int.parse(
-                                    numberChildrenEmployedController.text),
-                                residence: residenceSelected!,
-                                isDeleted: false);
-                            ref
-                                .read(listEmployedController.notifier)
-                                .updateEmployed(model.id, modelAdd)
-                                .then((value) => showSnackBar(
-                                    message: StringsUIEmployed
-                                        .updatingSuccessfullyText,
-                                    color: Colors.green,
-                                    seconds: 3))
-                                .timeout(
-                              const Duration(seconds: 15),
-                              onTimeout: () {
+                                    message: StringsUIEmployed.loadingAdd,
+                                    color: Colors.blue,
+                                    seconds: loadingSnackBarTime);
+                              } else {
+                                RemoteEmployedModel modelAdd =
+                                    RemoteEmployedModel(
+                                        id: widget.model!.id,
+                                        version: model.version! + 1,
+                                        catEmp: catSelected!,
+                                        fullName: nameEmployedController.text,
+                                        gender: sexSelected!,
+                                        numberChildren: int.parse(
+                                            numberChildrenEmployedController
+                                                .text),
+                                        residence: residenceSelected!,
+                                        isDeleted: false);
+                                ref
+                                    .read(listEmployedController.notifier)
+                                    .updateEmployed(model.id, modelAdd)
+                                    .then((value) {
+                                  showSnackBar(
+                                      message: StringsUIEmployed
+                                          .updatingSuccessfullyText,
+                                      color: Colors.green,
+                                      seconds: successSnackBarTime);
+                                }).onError((error, stackTrace) {
+                                  showSnackBar(
+                                      message: StringsUIEmployed.error,
+                                      color: Colors.red,
+                                      seconds: errorSnackBarTime);
+                                });
                                 showSnackBar(
-                                    message: StringsUIEmployed.connectionError,
-                                    color: Colors.red,
-                                    seconds: 4);
-                              },
-                            ).onError((error, stackTrace) => showSnackBar(
-                                    message: StringsUIEmployed.error,
-                                    color: Colors.red,
-                                    seconds: 3));
-                            showSnackBar(
-                                message: StringsUIEmployed.loadingUpdate,
-                                color: Colors.blue,
-                                seconds: 16);
-                          }
-                          Navigator.of(context, rootNavigator: true)
-                              .pop('dialog');
-                        }
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          model == null
-                              ? const Icon(Icons.add)
-                              : const Icon(Icons.edit_rounded),
-                          const SizedBox(
-                            width: 10.0,
-                          ),
-                          model == null
+                                    message: StringsUIEmployed.loadingUpdate,
+                                    color: Colors.blue,
+                                    seconds: loadingSnackBarTime);
+                              }
+                              Navigator.of(context, rootNavigator: true)
+                                  .pop('dialog');
+                            }
+                          },
+                          child: model == null
                               ? const Text(GeneralStrings.addText)
-                              : const Text(GeneralStrings.updateText)
-                        ],
-                      )),
+                              : const Text(GeneralStrings.updateText)),
+                    ],
+                  ),
                 )
               ],
             ),

@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../widgets/custom_item_bottom_nav_bar.dart';
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-class MainUI extends StatefulWidget {
+class MainUI extends ConsumerStatefulWidget {
   const MainUI({Key? key, required this.child}) : super(key: key);
   final Widget child;
   @override
-  State<MainUI> createState() => _MainUIState();
+  MainUIState createState() => MainUIState();
 }
 
-class _MainUIState extends State<MainUI> {
+class MainUIState extends ConsumerState<MainUI> {
   final tabs = [
     const ScaffoldWithNavBarTabItem(
       initialLocation: '/sales_page',
@@ -43,16 +44,15 @@ class _MainUIState extends State<MainUI> {
   @override
   Widget build(BuildContext context) {
     return Material(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.green,
-        ),
-        key: scaffoldKey,
-        body: widget.child,
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          items: tabs,
-          onTap: (index) => _onItemTapped(context, index),
+      child: SafeArea(
+        child: Scaffold(
+          key: scaffoldKey,
+          body: widget.child,
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            items: tabs,
+            onTap: (index) => _onItemTapped(context, index),
+          ),
         ),
       ),
     );

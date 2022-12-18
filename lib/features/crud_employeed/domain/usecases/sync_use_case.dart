@@ -11,18 +11,15 @@ class SyncEmployedUseCase {
   SyncEmployedUseCase(
       this._remoteEmployedRepository, this._localEmployedRepository);
   Future<List<RemoteEmployedModel>> syncEmployees() async {
-    List<RemoteEmployedModel> list_new_employes = [];
-    if (await CheckInternetConnection.checkIfHaveInternet()) {
-      final maxLocalId = await _localEmployedRepository.getMaxId();
-      final maxRemoteId = await _remoteEmployedRepository.getMaxRemoteId();
-      if (maxRemoteId > maxLocalId) {
-        list_new_employes =
-            await _remoteEmployedRepository.getNewEmployees(id: maxLocalId);
-        await _localEmployedRepository
-            .createMultiplesEmployees(list_new_employes);
-      }
+    List<RemoteEmployedModel> listNewEmployees = [];
+    final maxLocalId = await _localEmployedRepository.getMaxId();
+    final maxRemoteId = await _remoteEmployedRepository.getMaxRemoteId();
+    if (maxRemoteId > maxLocalId) {
+      listNewEmployees =
+          await _remoteEmployedRepository.getNewEmployees(id: maxLocalId);
+      await _localEmployedRepository.createMultiplesEmployees(listNewEmployees);
     }
     //TODO hacer el sync para cuando se actutalice, la idea es con un atributo version
-    return list_new_employes;
+    return listNewEmployees;
   }
 }

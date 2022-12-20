@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../features/crud_category/presentation/pages/crud_category_page.dart';
+import '../features/crud_products/presentation/pages/products_page.dart';
 import 'pages/main_page.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -43,7 +44,13 @@ final GoRouter route = GoRouter(
                 GoRoute(
                   path: 'crud_categories_page',
                   builder: (BuildContext context, GoRouterState state) {
-                    return CRUDCategory();
+                    return const CRUDCategory();
+                  },
+                ),
+                GoRoute(
+                  path: 'crud_products_page',
+                  builder: (BuildContext context, GoRouterState state) {
+                    return CRUDProduct();
                   },
                 ),
               ],

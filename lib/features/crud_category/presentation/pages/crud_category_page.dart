@@ -1,4 +1,3 @@
-import '../../domain/entities/category_entity.dart';
 import '../state/category_state.dart';
 import '../widgets/add_dialog_category.dart';
 import '../widgets/item_category_list.dart';
@@ -13,7 +12,6 @@ class CRUDCategory extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    double queryData = MediaQuery.of(context).size.height;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -31,6 +29,12 @@ class CRUDCategory extends ConsumerWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: [
+          IconButton(
+              onPressed: (() =>
+                  ref.read(listCategoryController.notifier).syncCategory()),
+              icon: const Icon(Icons.update))
+        ],
       ),
       body: ref.watch(listCategoryController).when(
         data: (list) {

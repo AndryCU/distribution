@@ -1,9 +1,7 @@
-import 'dart:io';
-
 import 'package:distribution/common/consts.dart';
-import 'package:distribution/features/core/snackbar_widget.dart';
 import 'package:distribution/features/crud_category/presentation/widgets/category_strings.dart';
 
+import '../../../../common/widgets.dart';
 import '../../domain/entities/category_entity.dart';
 import '../state/category_state.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +11,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../common/general_strings.dart';
 
 class AddCategoryDialog extends ConsumerStatefulWidget {
-  AddCategoryDialog({super.key, Category? this.model});
+  AddCategoryDialog({super.key, this.model});
   Category? model;
 
   @override

@@ -1,5 +1,7 @@
 import 'package:distribution/features/crud_category/domain/usecases/delete_category_use_case.dart';
+import 'package:distribution/features/crud_category/domain/usecases/sync_use_case.dart';
 import 'package:distribution/features/crud_category/domain/usecases/update_category_use_case.dart';
+import 'package:distribution/features/crud_category/presentation/state/category_state.dart';
 
 import '../../domain/entities/category_entity.dart';
 import '../../domain/repositories/local_category_repository.dart';
@@ -10,9 +12,10 @@ import 'package:get_it/get_it.dart';
 GetIt sl = GetIt.instance;
 
 class CategoryController extends StateNotifier<AsyncValue<List<Category>>> {
-  CategoryController() : super(const AsyncValue.loading()) {
+  CategoryController(this._ref) : super(const AsyncValue.loading()) {
     getCategories();
   }
+  final Ref _ref;
   Future<void> getCategories() async {
     try {
       state = const AsyncValue.loading();
@@ -51,5 +54,19 @@ class CategoryController extends StateNotifier<AsyncValue<List<Category>>> {
       categories.removeWhere((element) => element.id == id);
       state = AsyncValue.data(categories);
     });
+  }
+
+  Future<void> syncCategory() async {
+    try {
+      state = const AsyncValue.loading();
+      final newCategories =
+          await sl.get<SyncCategoryUseCase>().syncCategories();
+      state.whenData((value) {
+        state = AsyncValue.data([...value, ...newCategories]);
+      });
+      _ref.invalidate(listCategoryController);
+    } catch (e) {
+      state = AsyncValue.error(e, StackTrace.current);
+    }
   }
 }

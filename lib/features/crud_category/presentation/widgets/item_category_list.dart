@@ -2,7 +2,7 @@ import 'package:distribution/common/consts.dart';
 import 'package:distribution/features/crud_category/presentation/widgets/category_strings.dart';
 
 import '../../../../common/general_strings.dart';
-import '../../../core/snackbar_widget.dart';
+import '../../../../common/widgets.dart';
 import '../../domain/entities/category_entity.dart';
 import '../state/category_state.dart';
 import 'add_dialog_category.dart';
@@ -12,7 +12,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class CustomItemListCategory extends ConsumerWidget {
   final Category category;
 
-  CustomItemListCategory(this.category);
+  const CustomItemListCategory(this.category, {super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(

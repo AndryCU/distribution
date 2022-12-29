@@ -1,6 +1,5 @@
 import 'package:get_it/get_it.dart';
 import 'package:isar/isar.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../domain/entities/local_db_entity.dart' as local;
 import '../../domain/entities/local_db_entity.dart';
@@ -26,9 +25,9 @@ class LocalEmployedRepositoryImplementation implements LocalEmployedRepository {
     final employees =
         await isar.employedLocals.filter().isDeletedEqualTo(false).findAll();
     List<RemoteEmployedModel> list = [];
-    employees.forEach((element) {
+    for (var element in employees) {
       list.add(RemoteEmployedModel.fromEmployed(element));
-    });
+    }
     return list;
   }
 
@@ -77,13 +76,14 @@ class LocalEmployedRepositoryImplementation implements LocalEmployedRepository {
     });
   }
 
+  @override
   Future<void> createMultiplesEmployees(
       List<RemoteEmployedModel> listRemote) async {
     final employees = isar.employedLocals;
     List<EmployedLocal> list = [];
-    listRemote.forEach((employedModel) {
+    for (var employedModel in listRemote) {
       list.add(_createEmployedFromRemoteEmployedModel(employedModel));
-    });
+    }
     await isar.writeTxn(() async {
       await employees.putAll(list);
     });

@@ -11,5 +11,5 @@ abstract class LocalCategoryRepository {
   Future<void> updateCategory({required Category category});
   Future<int> getMaxId();
   Future<void> createMultipleCategories({required List<Category> list});
-  Future<CategoryLocal> getCategoryName({required int id});
+  Future<CategoryLocal> getCategoryById({required int id});
 }

@@ -29,14 +29,14 @@ class LocalCategoryRepositoryImplementation implements LocalCategoryRepository {
     final categories =
         await isar.categoryLocals.filter().isDeletedEqualTo(false).findAll();
     List<Category> list = [];
-    categories.forEach((element) {
+    for (var element in categories) {
       list.add(Category(
         id: element.id,
         name_cat: element.name_cat,
         isDeleted: element.isDeleted,
         version: element.version,
       ));
-    });
+    }
     return list;
   }
 
@@ -62,9 +62,9 @@ class LocalCategoryRepositoryImplementation implements LocalCategoryRepository {
   Future<void> createMultipleCategories({required List<Category> list}) async {
     final categories = isar.categoryLocals;
     List<CategoryLocal> local = [];
-    list.forEach((element) {
+    for (var element in list) {
       local.add(localCategoryFromRemote(element));
-    });
+    }
     await isar.writeTxn(() async => await categories.putAll(local));
   }
 
@@ -80,5 +80,11 @@ class LocalCategoryRepositoryImplementation implements LocalCategoryRepository {
       ..name_cat = category.name_cat
       ..version = category.version
       ..id = category.id!;
+  }
+
+  @override
+  Future<CategoryLocal> getCategoryById({required int id}) async {
+    final cat = await isar.categoryLocals.where().idEqualTo(id).findFirst();
+    return cat!;
   }
 }

@@ -1,7 +1,7 @@
 import 'package:distribution/common/consts.dart';
 
 import '../../../../common/general_strings.dart';
-import '../../../core/snackbar_widget.dart';
+import '../../../../common/widgets.dart';
 import 'strings_ui.dart';
 import '../../data/model/remote_employe_model.dart';
 import '../state/riverpood.dart';

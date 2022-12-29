@@ -24,6 +24,12 @@ class CRUDEmployed extends ConsumerWidget {
             Navigator.of(context).pop();
           },
         ),
+        actions: [
+          IconButton(
+              onPressed: () =>
+                  ref.read(listEmployedController.notifier).syncEmployees(),
+              icon: const Icon(Icons.update))
+        ],
       ),
       resizeToAvoidBottomInset: false,
       floatingActionButton: ref.watch(isVisibleFAB)

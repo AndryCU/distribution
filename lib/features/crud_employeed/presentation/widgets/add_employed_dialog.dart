@@ -1,12 +1,12 @@
 import 'package:distribution/common/consts.dart';
 import 'package:distribution/common/general_strings.dart';
-import 'package:distribution/features/core/snackbar_widget.dart';
 import 'package:distribution/features/crud_employeed/data/model/remote_employe_model.dart';
 import 'package:distribution/features/crud_employeed/presentation/widgets/strings_ui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
+import '../../../../common/widgets.dart';
 import '../state/riverpood.dart';
 
 GetIt sl = GetIt.instance;
@@ -312,12 +312,4 @@ class _AddEmployedDialogTestState extends ConsumerState<AddEmployedDialog> {
       ),
     );
   }
-}
-
-InputDecoration textFieldDecoration({required String hintText}) {
-  return InputDecoration(
-    labelText: hintText,
-    border: const OutlineInputBorder(),
-    contentPadding: const EdgeInsets.only(right: 15, left: 15),
-  );
 }

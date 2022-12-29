@@ -22,5 +22,5 @@ class StringsUIEmployed {
   static const residence = 'Residencia';
   static const childrenNumber = 'Cantidad de hijos';
   static const gender = 'Sexo';
-  static const connectionError = 'Error de conexión. Intentelo de nuevo';
+  static const errorListEmployees = 'Ha ocurrido un error! Inténtelo de nuevo.';
 }

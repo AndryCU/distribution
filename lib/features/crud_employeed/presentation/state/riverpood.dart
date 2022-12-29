@@ -1,16 +1,10 @@
 import '../../data/model/remote_employe_model.dart';
-import '../../domain/repositories/local_employed_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get_it/get_it.dart';
 
 import '../controller/employed_list_controller.dart';
 
 GetIt sl = GetIt.instance;
-
-final listEmployees = FutureProvider<List<RemoteEmployedModel>>((ref) async {
-  final list = await sl.get<LocalEmployedRepository>().getEmployees();
-  return list;
-});
 
 final listEmployedController = StateNotifierProvider<EmployedController,
     AsyncValue<List<RemoteEmployedModel>>>((ref) {

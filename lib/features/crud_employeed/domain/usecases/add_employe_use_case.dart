@@ -8,11 +8,11 @@ class AddEmployedUseCase {
   AddEmployedUseCase(
       this._remoteEmployedRepository, this._localEmployedRepository);
 
-  Future<int> addEmployed(RemoteEmployedModel _employedModel) async {
+  Future<int> addEmployed(RemoteEmployedModel employedModel) async {
     final idIsar = await _remoteEmployedRepository.createEmployed(
-        employedModel: _employedModel);
+        employedModel: employedModel);
     await _localEmployedRepository.createEmployed(
-        employedModel: _employedModel, id: idIsar);
+        employedModel: employedModel, id: idIsar);
     return idIsar;
   }
 }

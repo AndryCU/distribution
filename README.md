@@ -1,16 +1,9 @@
-# distribution
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Currently in Cuba there are few foods. For this reason, modules with different food, toiletries, and other products are distributed in workplaces.
+To help in this process, this application is being created, with the aim of making the product distribution process easier.<br />
+The application is still in the development phase, but it will allow:<br />
+-Select the workers to assign them a certain product<br />
+-Sales statistics<br />
+-Management of products, workers, product categories, and sales.<br />
+-Automatic cloud saving to avoid loss of information.<br />
+-Information synchronization.<br />
+-Export the information to excel<br />
